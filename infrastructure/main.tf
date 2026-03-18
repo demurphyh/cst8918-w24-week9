@@ -43,7 +43,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 resource "azurerm_storage_account" "storage" {
-  name                     = "${lower(var.labelPrefix)}a09st" 
+  name                     = "${lower(var.labelPrefix)}-a09-st" 
   resource_group_name      = azurerm_resource_group.rg.name
   location                 = azurerm_resource_group.rg.location
   account_tier             = "Standard"
