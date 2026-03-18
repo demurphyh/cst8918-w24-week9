@@ -47,17 +47,21 @@ jobs:
               fi
             fi
           done
-  validate_terraform:
-    runs-on: ubuntu-latest
-    name: Validate Terraform module
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: terraform validate
-        uses: dflook/terraform-validate@v2
-        with:
-          path: my-terraform-config
+      - name: Validate All Modules
+        id: validate
+        run: |
+          STATUS=0
+          for dir in $(find . -name "*.tf" -exec dirname {} \; | sort -u); do
+            echo "::group::Validating $dir"
+            cd "$dir"
+            terraform init -backend=false -input=false > /dev/null 2>&1
+            if ! terraform validate; then
+              STATUS=1
+            fi
+            cd "$GITHUB_WORKSPACE"
+            echo "::endgroup::"
+          done
+          exit $STATUS
       - name: Process check
         if: always()
         run: exit $CHECK_STATUS
