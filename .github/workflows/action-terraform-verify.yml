@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 2
+          fetch-depth: 0
       - name: Fetch changed files
         id: pr_files
         uses: jitterbit/get-changed-files@v1
